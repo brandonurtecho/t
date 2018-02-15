@@ -77,7 +77,7 @@ class Jugador {
 				this.proyectil.length = 0;
 			}			
 		}		
-	}
+	}	
 
 	dejaDeDisparar() {
 		this.disparar = false;
