@@ -12,7 +12,7 @@ class Contador {
 		return this.cont;
 	}
 
-	setCont(cont) {
-		this.cont = cont;
+	reiniciar() {
+		this.cont = 0;
 	}
 }

@@ -6,17 +6,17 @@ class Jugador {
 		this.ancho = 40;
 		this.largo = 60;
 
-		this.xPosicion = 0;
+		this.xPosicion = width/2;
 		this.yPosicion = height - this.largo - 1;
 
 		this.proyectil = [];
-		this.proyectil[0] = new Proyectil(this.xPosicion, this.yPosicion);
 
 		this.disparar = false;
 
 		this.contador = new Contador();
 
 		this.numeroProyectiles = 0;
+		this.espacioEntreProyectiles = -100;
 	}
 
 	dibujar() {
@@ -44,25 +44,21 @@ class Jugador {
 
 		if (this.disparar) {
 			if (keyIsDown(32)) {
-				if(this.contador.getCont() % 5 == 0){
+				if (this.contador.getCont() % 5 == 0) {
 					this.crearProyectiles();
 				}
-				
 			}
 			if (!keyIsDown(32) && this.disparar) {
 				this.dejaDeDisparar();
 			}
 		}
-
+		this.borrarProyectiles();
 		this.dibujarProyectiles();
 	}
 
 	crearProyectiles() {
-		let espacioEntreProyectiles = -100;
-		this.proyectil[this.numeroProyectiles] = new Proyectil(this.xPosicion + this.ancho / 2 - this.proyectil[0].getAncho() / 2, this.yPosicion + 1 + this.largo + espacioEntreProyectiles);
-		console.log(this.proyectil.length)
+		this.proyectil[this.numeroProyectiles] = new Proyectil(this.xPosicion + this.ancho / 2 - (20 / 2), this.yPosicion + 1 + this.largo + this.espacioEntreProyectiles);
 		this.numeroProyectiles++;
-
 	}
 
 	dibujarProyectiles() {
@@ -73,13 +69,19 @@ class Jugador {
 	}
 
 	borrarProyectiles() {
-
+		if (this.proyectil.length != 0) {
+			let ultimoProyectil = this.proyectil.length - 1;
+			if (this.proyectil[ultimoProyectil].getYPosicion() < 0) {
+				this.contador.reiniciar();
+				this.numeroProyectiles = 0;
+				this.proyectil.length = 0;
+			}			
+		}		
 	}
 
 	dejaDeDisparar() {
 		this.disparar = false;
-		this.contador.setCont(0);
-		this.numeroProyectiles = 0;
+
 	}
 
 	isDisparar() {
